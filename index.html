@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+
+<!-- SEO Meta Tags -->
+<title>PhotoCentre Studio | Wedding &amp; Event Photography in Ampang, KL</title>
+<meta name="description" content="Elegant wedding photography, cinematic videography, and event coverage by PhotoCentre Studio in Ampang, Kuala Lumpur. Request a free quote for your celebration." />
+<meta property="og:title" content="PhotoCentre Studio | Wedding &amp; Event Photography in Ampang, KL" />
+<meta property="og:description" content="Elegant wedding photography, cinematic videography, and event coverage by PhotoCentre Studio in Ampang, Kuala Lumpur. Request a free quote for your celebration." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="PhotoCentre Studio | Wedding &amp; Event Photography in Ampang, KL" />
+<meta name="twitter:description" content="Elegant wedding photography, cinematic videography, and event coverage by PhotoCentre Studio in Ampang, Kuala Lumpur. Request a free quote for your celebration." />
+<!-- End SEO Meta Tags -->
+
+<script data-field-replace>
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  var fields={};
+  var paramMap={
+    'first_name':'firstName','last_name':'lastName','full_name':'fullName',
+    'email':'email','phone':'phone','company':'company',
+    'city':'city','state':'state','country':'country'
+  };
+  var skipTags={'SCRIPT':1,'STYLE':1,'NOSCRIPT':1,'TEXTAREA':1,'CODE':1,'PRE':1};
+  var hasUrlFields=false;
+  for(var p in paramMap){
+    var v=params.get(p);
+    if(v){fields[paramMap[p]]=v;hasUrlFields=true;}
+  }
+  var contactId=params.get('contact_id');
+  function esc(s){
+    if(!s)return s;
+    var d=document.createElement('div');
+    d.appendChild(document.createTextNode(s));
+    return d.innerHTML;
+  }
+  function doReplace(data){
+    var r={};
+    r['{{full_name}}']=esc(((data.firstName||'')+' '+(data.lastName||'')).trim()||((data.fullName||data.name)||''));
+    r['{{first_name}}']=esc(data.firstName||(data.name?data.name.split(' ')[0]:'')||'');
+    r['{{last_name}}']=esc(data.lastName||(data.name&&data.name.indexOf(' ')>-1?data.name.substring(data.name.indexOf(' ')+1):'')||'');
+    r['{{email}}']=esc(data.email||'');
+    r['{{phone}}']=esc(data.phone||'');
+    r['{{company}}']=esc(data.company||'');
+    r['{{city}}']=esc(data.city||'');
+    r['{{state}}']=esc(data.state||'');
+    r['{{country}}']=esc(data.country||'');
+    r['{{date}}']=new Date().toLocaleDateString();
+    r['{{time}}']=new Date().toLocaleTimeString();
+    r['{{location}}']=[data.city,data.state,data.country].filter(Boolean).join(', ');
+    r['{{tracking_id}}']=esc(data.trackingId||'');
+    r['{{lastClickedProduct}}']=esc(data.lastClickedProduct||'');
+    r['{{lastProductClickDate}}']=esc(data.lastProductClickDate||'');
+    r['{{lastClickedProductPrice}}']=esc(data.lastClickedProductPrice||'');
+    r['{{lastClickedProductURL}}']=esc(data.lastClickedProductURL||'');
+    r['{{productsClickedCount}}']=esc(data.productsClickedCount||'0');
+    r['{{ip_address}}']=esc(data.ipAddress||'');
+    r['{{ip}}']=esc(data.ipAddress||'');
+    if(data.customFields){
+      for(var k in data.customFields){
+        r['{{'+k+'}}']=esc(String(data.customFields[k]||''));
+      }
+    }
+    params.forEach(function(v,k){
+      if(!paramMap[k]&&k!=='contact_id'&&k!=='page_id'&&k.indexOf('utm_')!==0){
+        r['{{'+k+'}}']=esc(v);
+      }
+    });
+    var hasValues=false;
+    for(var key in r){if(r[key]){hasValues=true;break;}}
+    if(!hasValues)return;
+    var walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT,{
+      acceptNode:function(n){
+        var p=n.parentNode;
+        if(p&&skipTags[p.nodeName])return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var node;
+    while(node=walker.nextNode()){
+      var txt=node.nodeValue;
+      if(txt&&txt.indexOf('{{')>-1){
+        var changed=txt;
+        for(var ph in r){
+          if(r[ph]&&changed.indexOf(ph)>-1){
+            changed=changed.split(ph).join(r[ph]);
+          }
+        }
+        if(changed!==txt)node.nodeValue=changed;
+      }
+    }
+    var attrs=['value','placeholder','content','alt','title'];
+    attrs.forEach(function(attr){
+      var els=document.querySelectorAll('['+attr+'*="{{"]');
+      for(var i=0;i<els.length;i++){
+        var tag=els[i].tagName;
+        if(skipTags[tag])continue;
+        var val=els[i].getAttribute(attr);
+        if(val){
+          var nv=val;
+          for(var ph in r){
+            if(r[ph]&&nv.indexOf(ph)>-1){
+              nv=nv.split(ph).join(r[ph]);
+            }
+          }
+          if(nv!==val)els[i].setAttribute(attr,nv);
+        }
+      }
+    });
+  }
+  function run(){
+    if(contactId){
+      var xhr=new XMLHttpRequest();
+      xhr.open('GET','https://paymegpt.com/api/landing/context/'+encodeURIComponent(contactId)+'?page_id=2720');
+      xhr.onload=function(){
+        if(xhr.status===200){
+          try{
+            var resp=JSON.parse(xhr.responseText);
+            if(resp.success&&resp.contact){
+              var merged=resp.contact;
+              for(var k in fields){merged[k]=fields[k];}
+              doReplace(merged);
+              return;
+            }
+          }catch(e){}
+        }
+        if(hasUrlFields)doReplace(fields);
+      };
+      xhr.onerror=function(){if(hasUrlFields)doReplace(fields);};
+      xhr.send();
+    }else if(hasUrlFields){
+      doReplace(fields);
+    }
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',run);}
+  else{run();}
+})();
+</script>
+<script data-payment>
+(function(){
+  var slug='JGtvc3dqF';
+  var apiBase='https://paymegpt.com';
+  function findEmail(){
+    var ids=['email','emailAddress','buyer-email','buyerEmail','user-email','userEmail','checkout-email','customer-email','contact-email'];
+    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value&&el.value.includes('@'))return el.value.trim();}
+    var inputs=document.querySelectorAll('input[type="email"],input[name*="email"],input[placeholder*="email"],input[placeholder*="Email"]');
+    for(var j=0;j<inputs.length;j++){if(inputs[j].value&&inputs[j].value.includes('@'))return inputs[j].value.trim();}
+    return '';
+  }
+  function findName(){
+    var ids=['name','fullName','full-name','buyer-name','buyerName','customer-name','userName','user-name'];
+    for(var i=0;i<ids.length;i++){var el=document.getElementById(ids[i]);if(el&&el.value)return el.value.trim();}
+    var inputs=document.querySelectorAll('input[name*="name"]:not([name*="email"]):not([type="email"]),input[placeholder*="name"]:not([placeholder*="email"]):not([type="email"]),input[placeholder*="Name"]:not([type="email"])');
+    for(var j=0;j<inputs.length;j++){if(inputs[j].value)return inputs[j].value.trim();}
+    return '';
+  }
+  var __realProcessPayment=function(a,b,c,d,e){
+    var amountCents,email,productName,productDescription,customerName,quantity;
+    if(a&&typeof a==='object'){
+      amountCents=a.amountCents;email=a.email;productName=a.productName;
+      productDescription=a.productDescription||'';customerName=a.name||'';quantity=a.quantity||1;
+    }else{
+      amountCents=typeof a==='number'?a:0;productName=typeof b==='string'?b:'';
+      productDescription=typeof c==='string'?c:'';email='';customerName='';quantity=1;
+    }
+    if(!email)email=findEmail();
+    if(!customerName)customerName=findName();
+    if(!productName){alert('Product name is required.');return Promise.reject('no_product_name');}
+    if(!amountCents||amountCents<100){alert('Amount must be at least $1.00');return Promise.reject('invalid_amount');}
+    if(!email){alert('Please enter your email address.');return Promise.reject('no_email');}
+    var successBase=window.location.href.split('?')[0];
+    return fetch(apiBase+'/api/landing-pages/public/'+slug+'/payment/checkout',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email:email,name:customerName,amountCents:amountCents,productName:productName,productDescription:productDescription,quantity:quantity,successUrl:successBase+'?payment=success&product='+encodeURIComponent(productName)+'&session_id={CHECKOUT_SESSION_ID}',cancelUrl:successBase+'?payment=cancelled'})
+    }).then(function(r){return r.json();}).then(function(d){
+      if(d.checkoutUrl){window.location.href=d.checkoutUrl;}
+      else{alert(d.error||'Failed to process payment');throw new Error(d.error);}
+    });
+  };
+  Object.defineProperty(window,'__processPayment',{value:__realProcessPayment,writable:false,configurable:false});
+  document.addEventListener('DOMContentLoaded',function(){
+    var urlParams=new URLSearchParams(window.location.search);
+    if(urlParams.get('payment')==='success'){
+      var pName=urlParams.get('product')||'your item';
+      var overlay=document.createElement('div');overlay.id='payment-success-overlay';
+      overlay.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999999;font-family:system-ui,-apple-system,sans-serif;';
+      overlay.innerHTML='<div style="background:white;border-radius:16px;padding:40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.15);"><div style="width:64px;height:64px;border-radius:50%;background:#dcfce7;margin:0 auto 20px;display:flex;align-items:center;justify-content:center;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><h2 style="margin:0 0 12px;font-size:24px;font-weight:700;color:#111827;">Payment Successful!</h2><p style="margin:0 0 24px;color:#6b7280;font-size:16px;">Thank you for purchasing '+pName.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'.</p><button onclick="document.getElementById(\'payment-success-overlay\').remove();window.history.replaceState({},\'\',window.location.pathname);" style="padding:12px 32px;font-size:16px;font-weight:600;background:#16a34a;color:white;border:none;border-radius:8px;cursor:pointer;">Continue</button></div>';
+      document.body.appendChild(overlay);
+    }
+  });
+})();
+</script>  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="antialiased">
+  <!-- ============================================================================ -->
+  <!-- HEADER / NAVIGATION: Brand anchor with anchored sections and primary CTA     -->
+  <!-- Mobile Padding: Ensures logo and navigation never touch viewport edges        -->
+  <!-- ============================================================================ -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-rose-100">
+    <div class="max-w-7xl mx-auto px-4 py-4 md:px-8 lg:px-12 flex items-center justify-between gap-4">
+      <a href="#home" class="flex items-center gap-3 min-w-0">
+        <div class="h-11 w-11 rounded-full bg-gradient-to-br from-rose-900 to-rose-700 flex items-center justify-center text-white font-bold shadow-md">PC</div>
+        <div class="min-w-0">
+          <p class="text-sm uppercase tracking-[0.22em] text-rose-800 font-semibold">PhotoCentre Studio</p>
+          <p class="text-xs text-stone-500">Ampang, Kuala Lumpur</p>
+        </div>
+      </a>
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-stone-700">
+        <a href="#services" class="hover:text-rose-900">Services</a>
+        <a href="#gallery" class="hover:text-rose-900">Gallery</a>
+        <a href="#testimonials" class="hover:text-rose-900">Testimonials</a>
+        <a href="#contact" class="hover:text-rose-900">Contact</a>
+      </nav>
+      <a href="#contact" class="hidden md:inline-flex px-5 py-3 rounded-full bg-rose-900 text-white text-sm font-semibold shadow-md hover:bg-rose-800">Get a Free Quote</a>
+    </div>
+  </header>
+
+  <!-- ============================================================================ -->
+  <!-- HERO SECTION: Main landing area with headline, subtext, and primary CTA     -->
+  <!-- Features: Cinematic background, romantic tone, responsive layout            -->
+  <!-- Mobile Padding: Ensures text never touches viewport edges                   -->
+  <!-- ============================================================================ -->
+  <main id="home">
+    <section data-section="hero" class="hero-section text-white">
+      <div class="max-w-7xl mx-auto px-4 py-16 sm:py-20 md:py-24 lg:py-28 md:px-8 lg:px-12">
+        <div class="max-w-3xl">
+          <p class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs sm:text-sm uppercase tracking-[0.24em]">
+            Wedding & Event Photography
+          </p>
+          <h1 class="mt-6 text-4xl sm:text-5xl lg:text-7xl font-semibold leading-tight tracking-tight">
+            Moments That Last Forever
+          </h1>
+          <p class="mt-5 max-w-2xl text-base sm:text-lg text-white/88 leading-8">
+            PhotoCentre Studio creates timeless wedding photography and cinematic videography for couples, families, and brands in Ampang and across Kuala Lumpur. Elegant storytelling, natural emotions, and refined editing in every frame.
+          </p>
+          <div class="mt-8 flex flex-col sm:flex-row gap-4">
+            <a href="#contact" class="inline-flex justify-center rounded-full bg-white text-rose-950 px-6 py-3.5 font-semibold shadow-lg hover:bg-rose-50 cta-primary">Get a Free Quote</a>
+            <a href="#gallery" class="inline-flex justify-center rounded-full border border-white/30 bg-white/10 px-6 py-3.5 font-semibold hover:bg-white/15">View Gallery</a>
+          </div>
+          <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl">
+            <div class="rounded-2xl bg-white/10 border border-white/15 p-4">
+              <p class="text-2xl font-semibold">10+</p>
+              <p class="text-sm text-white/80 mt-1">Years of storytelling</p>
+            </div>
+            <div class="rounded-2xl bg-white/10 border border-white/15 p-4">
+              <p class="text-2xl font-semibold">300+</p>
+              <p class="text-sm text-white/80 mt-1">Events captured</p>
+            </div>
+            <div class="rounded-2xl bg-white/10 border border-white/15 p-4">
+              <p class="text-2xl font-semibold">KL</p>
+              <p class="text-sm text-white/80 mt-1">Based in Ampang</p>
+            </div>
+            <div class="rounded-2xl bg-white/10 border border-white/15 p-4">
+              <p class="text-2xl font-semibold">5★</p>
+              <p class="text-sm text-white/80 mt-1">Client-loved service</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================================ -->
+    <!-- SERVICES SECTION: Signature offerings with elegant icon cards               -->
+    <!-- Features: Wedding, events, portraits, editing, and cinematic video         -->
+    <!-- Mobile Padding: Prevents text clipping and supports stacked card layout     -->
+    <!-- ============================================================================ -->
+    <section data-section="services" id="services" class="py-16 sm:py-20">
+      <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
+        <div class="max-w-2xl">
+          <p class="text-sm uppercase tracking-[0.26em] text-rose-800 font-semibold">Our Services</p>
+          <h2 class="mt-3 text-3xl sm:text-4xl font-semibold text-stone-900">Designed for unforgettable celebrations</h2>
+          <p class="mt-4 text-stone-600 leading-8">From intimate solemnizations to grand corporate launches, we document every important moment with a calm, professional approach and a cinematic eye.</p>
+        </div>
+        <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <article class="lift-card rounded-3xl border border-rose-100 bg-white p-6">
+            <h3 class="text-xl font-semibold text-rose-950">Wedding Photography</h3>
+            <p class="mt-3 text-stone-600 leading-7">Romantic, natural coverage of vows, portraits, family moments, and the details that make your day personal.</p>
+          </article>
+          <article class="lift-card rounded-3xl border border-rose-100 bg-white p-6">
+            <h3 class="text-xl font-semibold text-rose-950">Wedding Videography</h3>
+            <p class="mt-3 text-stone-600 leading-7">Cinematic motion films that preserve the energy, emotion, and beautiful pacing of your celebration.</p>
+          </article>
+          <article class="lift-card rounded-3xl border border-rose-100 bg-white p-6">
+            <h3 class="text-xl font-semibold text-rose-950">Event Coverage</h3>
+            <p class="mt-3 text-stone-600 leading-7">Corporate functions, launches, private dinners, and milestone gatherings captured with polished consistency.</p>
+          </article>
+          <article class="lift-card rounded-3xl border border-rose-100 bg-white p-6">
+            <h3 class="text-xl font-semibold text-rose-950">Graduation Portraits</h3>
+            <p class="mt-3 text-stone-600 leading-7">Celebrate achievement with stylish portraits that feel bright, proud, and ready to share with family.</p>
+          </article>
+          <article class="lift-card rounded-3xl border border-rose-100 bg-white p-6">
+            <h3 class="text-xl font-semibold text-rose-950">Corporate Events</h3>
+            <p class="mt-3 text-stone-600 leading-7">Professional coverage for annual dinners, conferences, and brand experiences with a clean editorial finish.</p>
+          </article>
+          <article class="lift-card rounded-3xl border border-rose-100 bg-white p-6">
+            <h3 class="text-xl font-semibold text-rose-950">Photo Editing</h3>
+            <p class="mt-3 text-stone-600 leading-7">Careful retouching, color grading, and final delivery that enhances beauty while keeping moments authentic.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================================ -->
+    <!-- GALLERY TEASER SECTION: Visual story preview with curated imagery           -->
+    <!-- Features: Romantic and cinematic collage to inspire enquiries              -->
+    <!-- Mobile Padding: Maintains balanced spacing on narrow screens               -->
+    <!-- ============================================================================ -->
+    <section data-section="gallery" id="gallery" class="py-16 sm:py-20 bg-white">
+      <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+          <div class="max-w-2xl">
+            <p class="text-sm uppercase tracking-[0.26em] text-rose-800 font-semibold">Gallery Teaser</p>
+            <h2 class="mt-3 text-3xl sm:text-4xl font-semibold text-stone-900">A preview of the moments we protect</h2>
+            <p class="mt-4 text-stone-600 leading-8">Soft smiles, grand entrances, and emotional candid moments—each image is composed to feel graceful, intimate, and unforgettable.</p>
+          </div>
+          <a href="#contact" class="inline-flex items-center justify-center rounded-full border border-rose-900 px-5 py-3 font-semibold text-rose-900 hover:bg-rose-50">Request Full Portfolio</a>
+        </div>
+        <div class="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <div class="gallery-tile h-72">
+            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=900&q=80" alt="Elegant wedding couple portrait" class="h-full w-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent"></div>
+          </div>
+          <div class="gallery-tile h-72 md:h-80 lg:row-span-2 lg:h-full">
+            <img src="https://images.unsplash.com/photo-1523438097201-512ae7d59c0b?auto=format&fit=crop&w=900&q=80" alt="Wedding celebration and joyful guests" class="h-full w-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent"></div>
+          </div>
+          <div class="gallery-tile h-72">
+            <img src="https://images.unsplash.com/photo-1529639217858-0c8c4b3c7f0c?auto=format&fit=crop&w=900&q=80" alt="Romantic wedding details and rings" class="h-full w-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent"></div>
+          </div>
+          <div class="gallery-tile h-72">
+            <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=900&q=80" alt="Cinematic couple portrait in warm light" class="h-full w-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent"></div>
+          </div>
+          <div class="gallery-tile h-72">
+            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=900&q=80" alt="Corporate event photography with stage lighting" class="h-full w-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================================ -->
+    <!-- TESTIMONIALS SECTION: Client confidence and emotional reassurance           -->
+    <!-- Features: Romantic, professional social proof for couples and families      -->
+    <!-- Mobile Padding: Readable cards with comfortable line spacing               -->
+    <!-- ============================================================================ -->
+    <section data-section="testimonials" id="testimonials" class="py-16 sm:py-20">
+      <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
+        <div class="max-w-2xl">
+          <p class="text-sm uppercase tracking-[0.26em] text-rose-800 font-semibold">Testimonials</p>
+          <h2 class="mt-3 text-3xl sm:text-4xl font-semibold text-stone-900">Trusted by couples, families, and teams</h2>
+        </div>
+        <div class="mt-10 grid gap-5 lg:grid-cols-3">
+          <blockquote class="lift-card rounded-3xl bg-white border border-rose-100 p-6">
+            <p class="text-stone-700 leading-8">“PhotoCentre Studio made us feel completely at ease. Our wedding photos look elegant, emotional, and beautifully natural. We relive the day every time we see them.”</p>
+            <footer class="mt-5">
+              <p class="font-semibold text-rose-950">Alya & Daniel</p>
+              <p class="text-sm text-stone-500">Wedding couple, Ampang</p>
+            </footer>
+          </blockquote>
+          <blockquote class="lift-card rounded-3xl bg-white border border-rose-100 p-6">
+            <p class="text-stone-700 leading-8">“Professional, punctual, and very easy to work with. The team captured our corporate event with such clean, premium quality. Highly recommended.”</p>
+            <footer class="mt-5">
+              <p class="font-semibold text-rose-950">Nadia Lim</p>
+              <p class="text-sm text-stone-500">Marketing Manager</p>
+            </footer>
+          </blockquote>
+          <blockquote class="lift-card rounded-3xl bg-white border border-rose-100 p-6">
+            <p class="text-stone-700 leading-8">“They photographed my daughter’s graduation with such warmth and care. The portraits feel timeless and perfectly framed for our family album.”</p>
+            <footer class="mt-5">
+              <p class="font-semibold text-rose-950">Mr. Rahman</p>
+              <p class="text-sm text-stone-500">Family portrait client</p>
+            </footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================================ -->
+    <!-- CONTACT SECTION: Lead capture form for free quote enquiries                 -->
+    <!-- Features: Structured fields, clear CTA, and trust-building copy            -->
+    <!-- Mobile Padding: Generous spacing prevents clipped labels and inputs         -->
+    <!-- ============================================================================ -->
+    <section data-section="contact" id="contact" class="py-16 sm:py-20 bg-rose-950 text-white">
+      <div class="max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
+        <div class="grid gap-10 lg:grid-cols-2 lg:items-start">
+          <div>
+            <p class="text-sm uppercase tracking-[0.26em] text-rose-200 font-semibold">Get a Free Quote</p>
+            <h2 class="mt-3 text-3xl sm:text-4xl font-semibold">Let’s plan your perfect shoot</h2>
+            <p class="mt-4 text-white/85 leading-8 max-w-xl">Tell us about your wedding, family celebration, or corporate event. We’ll recommend the right coverage, timeline, and deliverables to match your vision.</p>
+            <div class="mt-8 space-y-4 text-white/85">
+              <div class="flex gap-3">
+                <div class="mt-1 h-2.5 w-2.5 rounded-full bg-rose-300"></div>
+                <p>Based in Ampang, serving Kuala Lumpur and nearby areas.</p>
+              </div>
+              <div class="flex gap-3">
+                <div class="mt-1 h-2.5 w-2.5 rounded-full bg-rose-300"></div>
+                <p>Romantic, cinematic, and professionally edited visuals.</p>
+              </div>
+              <div class="flex gap-3">
+                <div class="mt-1 h-2.5 w-2.5 rounded-full bg-rose-300"></div>
+                <p>Fast response for wedding bookings and event enquiries.</p>
+              </div>
+            </div>
+          </div>
+
+          <form id="contact-form" class="contact-form rounded-3xl bg-white text-stone-900 p-6 sm:p-8 shadow-2xl">
+            <div class="grid gap-5">
+              <div>
+                <label for="name" class="block text-sm font-semibold text-stone-700">Name</label>
+                <input id="name" name="name" type="text" required class="focus-ring mt-2 w-full rounded-2xl border border-stone-200 bg-white px-4 py-3.5" placeholder="Your full name" />
+              </div>
+              <div>
+                <label for="phone" class="block text-sm font-semibold text-stone-700">Phone</label>
+                <input id="phone" name="phone" type="tel" required class="focus-ring mt-2 w-full rounded-2xl border border-stone-200 bg-white px-4 py-3.5" placeholder="+60 12-345 6789" />
+              </div>
+              <div class="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label for="event_type" class="block text-sm font-semibold text-stone-700">Event Type</label>
+                  <select id="event_type" name="event_type" required class="focus-ring mt-2 w-full rounded-2xl border border-stone-200 bg-white px-4 py-3.5">
+                    <option value="">Select one</option>
+                    <option>Wedding Photography</option>
+                    <option>Wedding Videography</option>
+                    <option>Event Coverage</option>
+                    <option>Graduation Portraits</option>
+                    <option>Corporate Events</option>
+                    <option>Photo Editing</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="event_date" class="block text-sm font-semibold text-stone-700">Event Date</label>
+                  <input id="event_date" name="event_date" type="date" required class="focus-ring mt-2 w-full rounded-2xl border border-stone-200 bg-white px-4 py-3.5" />
+                </div>
+              </div>
+              <div>
+                <label for="message" class="block text-sm font-semibold text-stone-700">Message</label>
+                <textarea id="message" name="message" rows="5" class="focus-ring mt-2 w-full rounded-2xl border border-stone-200 bg-white px-4 py-3.5" placeholder="Share your venue, preferred style, number of hours, or special moments you want captured."></textarea>
+              </div>
+              <button type="submit" class="rounded-full bg-rose-900 px-6 py-3.5 font-semibold text-white shadow-lg hover:bg-rose-800 cta-primary">Send Enquiry</button>
+              <p class="text-sm text-stone-500">We typically reply within one business day with package suggestions and availability.</p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================================================================ -->
+  <!-- FOOTER: Brand closing with location and reassurance                          -->
+  <!-- Features: Minimal, elegant, and easy to navigate                              -->
+  <!-- Mobile Padding: Comfortable spacing for small screens                       -->
+  <!-- ============================================================================ -->
+  <footer class="bg-stone-950 text-stone-300">
+    <div class="max-w-7xl mx-auto px-4 py-10 md:px-8 lg:px-12 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <p class="text-white font-semibold">PhotoCentre Studio</p>
+        <p class="text-sm mt-1">Wedding & event photography based in Ampang, Kuala Lumpur.</p>
+      </div>
+      <div class="text-sm">
+        <p class="text-stone-400">Elegant visuals for couples, families, and brands.</p>
+      </div>
+    </div>
+  </footer>
+
+  
+  <script src="script.js"></script>
+</body>
+</html>
